@@ -42,9 +42,16 @@ public class Main {
         lights.get(3).addSideLight(new Light[]{lights.get(2)});
 
 
-        lights.get(4).addSideLight(new Light[]{lights.get(3),lights.get(5)});
-        lights.get(5).addSideLight(new Light[]{lights.get(4),lights.get(6)});
-        lights.get(6).addSideLight(new Light[]{lights.get(5),lights.get(7)});
+        lights.get(4).addSideLight(new Light[]{lights.get(5)});
+        lights.get(4).addSideLight(new Light[]{lights.get(3)});
+
+        lights.get(5).addSideLight(new Light[]{lights.get(6)});
+        lights.get(5).addSideLight(new Light[]{lights.get(4)});
+
+        lights.get(6).addSideLight(new Light[]{lights.get(7)});
+        lights.get(6).addSideLight(new Light[]{lights.get(5)});
+
+        lights.get(7).addSideLight(new Light[]{lights.get(6),lights.get(8)});
         lights.get(7).addSideLight(new Light[]{lights.get(6),lights.get(8)});
         lights.get(8).addSideLight(new Light[]{lights.get(7)});
 
