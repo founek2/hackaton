@@ -9,13 +9,28 @@ import com.pi4j.io.gpio.trigger.GpioBlinkStateTrigger;
 import com.pi4j.io.gpio.trigger.GpioBlinkStopStateTrigger;
 import com.pi4j.wiringpi.SoftPwm;
 
+import java.util.LinkedList;
+
 public class Main {
     public static void main(String[] args) throws InterruptedException {
 
         System.out.println("<--Pi4J--> GPIO Blink Example ... started.");
 
+        LinkedList<Light> lights = new  LinkedList<Light>();
+        lights.add(new Light(lights.size(),RaspiPin.GPIO_08 , RaspiPin.GPIO_15));
+        lights.add(new Light(lights.size(),RaspiPin.GPIO_09 , RaspiPin.GPIO_16));
+        lights.add(new Light(lights.size(),RaspiPin.GPIO_27 , RaspiPin.GPIO_01));
+        lights.add(new Light(lights.size(),RaspiPin.GPIO_00 , RaspiPin.GPIO_04));
+        lights.add(new Light(lights.size(),RaspiPin.GPIO_02 , RaspiPin.GPIO_05));
+        lights.add(new Light(lights.size(),RaspiPin.GPIO_03 , RaspiPin.GPIO_06));
+        lights.add(new Light(lights.size(),RaspiPin.GPIO_12 , RaspiPin.GPIO_10));
+        lights.add(new Light(lights.size(),RaspiPin.GPIO_13 , RaspiPin.GPIO_11));
+        lights.add(new Light(lights.size(),RaspiPin.GPIO_14 , RaspiPin.GPIO_26));
+
+
+
         // create gpio controller
-        final GpioController gpio = GpioFactory.getInstance();
+      /*  final GpioController gpio = GpioFactory.getInstance();
 
 
         // provision gpio pin #01 & #03 as an output pins and blink
@@ -34,7 +49,7 @@ public class Main {
 
         for (int i = 0; i < leds.length; i++) {
             SoftPwm.softPwmCreate(leds[i].getPin().getAddress(),0,100);
-            leds[i].low();
+            SoftPwm.softPwmWrite(leds[i].getPin().getAddress(),5);
         }
 
 
@@ -53,9 +68,9 @@ public class Main {
 
 
 
-        for (int i = 0+2; i < buttons.length-2; i++) {
+        for (int i = 0+2; i < buttons.length; i++) {
 
-            buttons[i].addListener(new GpioPinListenerDigitalMy(leds[i],i));
+            buttons[i].addListener(new GpioPinListenerDigitalMy(leds[i-2],leds[i-1],leds[i],i));
          /*  buttons[i].addTrigger(new GpioBlinkStateTrigger(PinState.HIGH, leds[i-2], 3));
             buttons[i].addTrigger(new GpioBlinkStateTrigger(PinState.HIGH, leds[i-1], 2));
             buttons[i].addTrigger(new GpioBlinkStateTrigger(PinState.HIGH, leds[i],1));
@@ -67,7 +82,7 @@ public class Main {
             buttons[i].addTrigger(new GpioBlinkStopStateTrigger(PinState.LOW, leds[i-1]));
             buttons[i].addTrigger(new GpioBlinkStopStateTrigger(PinState.LOW, leds[i]));
             buttons[i].addTrigger(new GpioBlinkStopStateTrigger(PinState.LOW, leds[i+1]));
-            buttons[i].addTrigger(new GpioBlinkStopStateTrigger(PinState.LOW, leds[i+2]));*/
+            buttons[i].addTrigger(new GpioBlinkStopStateTrigger(PinState.LOW, leds[i+2]));
         }
 
         int i = 0;
@@ -78,7 +93,7 @@ public class Main {
             leds[i].setState(PinState.LOW);
             i++;
             if (i >= lights)
-                i = 0;*/
-        }
+                i = 0;
+        }*/
     }
 }
