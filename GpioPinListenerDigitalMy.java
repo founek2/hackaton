@@ -3,7 +3,6 @@ import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
@@ -28,11 +27,10 @@ public class GpioPinListenerDigitalMy implements GpioPinListenerDigital {
 
 
             try {
-                sendPost("http://10.10.1.10:3000","on",light.getId());
+                sendPost(LightLevels.URL+"/point", "on", light.getId());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
 
 
         } else {
@@ -44,13 +42,13 @@ public class GpioPinListenerDigitalMy implements GpioPinListenerDigital {
                         if (!clicked) {
                             light.setLighted(false);
                             try {
-                                sendPost("http://10.10.1.10:3000","off",light.getId());
+                                sendPost(LightLevels.URL+"/point", "off", light.getId());
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
 
                         }
-                    } catch (InterruptedException  e) {
+                    } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
@@ -62,7 +60,8 @@ public class GpioPinListenerDigitalMy implements GpioPinListenerDigital {
     }
 
     private final String USER_AGENT = "Mozilla/5.0";
-    private void sendPost(String url,String what,int id) throws Exception {
+
+    private void sendPost(String url, String what, int id) throws Exception {
 
         //String url = "http://192.168.1.158:3001";
         URL obj = new URL(url);
@@ -73,7 +72,7 @@ public class GpioPinListenerDigitalMy implements GpioPinListenerDigital {
         con.setRequestProperty("User-Agent", USER_AGENT);
         con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 
-        String urlParameters = what+"="+id;
+        String urlParameters = what + "=" + id;
 
         // Send post request
         con.setDoOutput(true);
@@ -81,10 +80,11 @@ public class GpioPinListenerDigitalMy implements GpioPinListenerDigital {
         wr.writeBytes(urlParameters);
         wr.flush();
         wr.close();
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(con.getInputStream()));
 
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
         in.close();
+
 
     }
 
