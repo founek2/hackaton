@@ -22,6 +22,7 @@ public class Light {
         this.button = GpioFactory.getInstance().provisionDigitalInputPin(button, PinPullResistance.PULL_DOWN);
         SoftPwm.softPwmCreate(this.led.getPin().getAddress(), 0, 100);
         SoftPwm.softPwmWrite(this.led.getPin().getAddress(), LightLevels.LIGHT_LEVELS[0]);
+        this.button.addListener(new GpioPinListenerDigitalMy(this));
     }
 
     public void addSideLight(Light[] sideLight) {
@@ -37,6 +38,11 @@ public class Light {
 
     public void addSubLevelLight(Light parrent, int level) {
         parrentLights.put(parrent,level);
+        SoftPwm.softPwmWrite(led.getPin().getAddress(), maxLight());
+    }
+
+    public void removeSubLevelLight(Light parrent){
+        parrentLights.remove(parrent);
         SoftPwm.softPwmWrite(led.getPin().getAddress(), maxLight());
     }
 
