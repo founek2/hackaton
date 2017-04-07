@@ -1,7 +1,6 @@
 import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 
-import java.util.Timer;
 import java.util.TimerTask;
 
 /**
@@ -9,8 +8,7 @@ import java.util.TimerTask;
  */
 public class GpioPinListenerDigitalMy implements GpioPinListenerDigital {
     Light light;
-
-    Timer timer = null;
+    Thread thread;
 
     public GpioPinListenerDigitalMy(Light light) {
         this.light = light;
@@ -19,23 +17,26 @@ public class GpioPinListenerDigitalMy implements GpioPinListenerDigital {
     @Override
     public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
         if (event.getState().isHigh()) {
-            if (timer == null) {
-                light.setLighted(true);
-            }else {
-                timer.cancel();
-                timer=null;
-            }
-
+            light.setLighted(true);
+            thread.interrupt();
         } else {
-            timer = new Timer();
-            timer.schedule(new TimerTask() {
+            System.out.println("start timer " + light.getId());
 
-                @Override
+            thread=new Thread() {
                 public void run() {
-                    light.setLighted(false);
-                    timer = null;
+                    try {
+                        this.sleep(5000);
+                        System.out.println("trigered " + light.getId());
+                        light.setLighted(false);
+                    } catch (InterruptedException | IllegalThreadStateException e) {
+                        e.printStackTrace();
+                    }
+                    this.interrupt();
                 }
-            }, 0, 500);
+            };
+            thread.start();
+
         }
+        System.out.println("changed" + light.getId());
     }
 }

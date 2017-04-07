@@ -84,4 +84,7 @@ public class Light {
         }
     }
 
+    public int getId() {
+        return id;
+    }
 }
