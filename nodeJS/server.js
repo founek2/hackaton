@@ -11,6 +11,8 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+var array = [];
+
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
@@ -29,11 +31,16 @@ app.get('/style.js', function (req, res) {
 app.get('/lamp.png', function (req, res) {
     res.sendFile(__dirname + '/lamp.png');
 });
-
+app.get('/kekel.html', function (req, res) {
+    res.sendFile(__dirname + '/kekel.html');
+});
+//{on: ?, off: ?}
 app.post('/point', function (req, res) {
     console.log(req.body)
-    io.sockets.in('room').emit('point', req.body.point);
+    array.push(req.body.on);
+    io.sockets.in('room').emit('point', req.body);
     res.send()
+
 
 })
 
@@ -41,7 +48,8 @@ app.post('/point', function (req, res) {
 io.on('connection', function (socket) {
     socket.join('room');
 
-
+    if (array.length  > 0){
+    socket.emit('pointArchive', array);}
 
 });
 
