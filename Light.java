@@ -67,17 +67,20 @@ public class Light {
     }
 
     public int maxLight() {
-        Map.Entry<Light, Integer> maxEntry = null;
-
-        for (Map.Entry<Light, Integer> entry : parrentLights.entrySet()) {
-            if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0) {
-                maxEntry = entry;
+        if(lighted){
+            return LightLevels.LIGHT_LEVELS[LightLevels.LIGHT_LEVELS.length-1];
+        }else {
+            Map.Entry<Light, Integer> maxEntry = null;
+            for (Map.Entry<Light, Integer> entry : parrentLights.entrySet()) {
+                if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0) {
+                    maxEntry = entry;
+                }
             }
-        }
-        if (maxEntry == null) {
-            return LightLevels.LIGHT_LEVELS[0];
-        } else {
-            return maxEntry.getValue();
+            if (maxEntry == null) {
+                return LightLevels.LIGHT_LEVELS[0];
+            } else {
+                return maxEntry.getValue();
+            }
         }
     }
 

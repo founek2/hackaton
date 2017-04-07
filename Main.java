@@ -51,8 +51,9 @@ public class Main {
         lights.get(6).addSideLight(new Light[]{lights.get(7)});
         lights.get(6).addSideLight(new Light[]{lights.get(5)});
 
-        lights.get(7).addSideLight(new Light[]{lights.get(6),lights.get(8)});
-        lights.get(7).addSideLight(new Light[]{lights.get(6),lights.get(8)});
+        lights.get(7).addSideLight(new Light[]{lights.get(8)});
+        lights.get(7).addSideLight(new Light[]{lights.get(6)});
+
         lights.get(8).addSideLight(new Light[]{lights.get(7)});
 
         while (true) {
