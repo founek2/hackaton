@@ -28,20 +28,11 @@ public class GpioPinListenerDigitalMy implements GpioPinListenerDigital {
 
 
             try {
-                sendPost();
+                sendPost("http://10.10.1.10:3000","on",light.getId());
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-
-          /*  try {
-                System.out.println("send");
-                System.out.println("curl --data \"on:"+light.getId()+"\" 192.168.1.158:3001 --header \"Content-Type: text/html\"");
-                Process p = Runtime.getRuntime().exec("curl --data \"on:"+light.getId()+"\" 192.168.1.158:3001 --header \"Content-Type: text/html\"");
-                System.out.println("response: "+p.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
 
 
         } else {
@@ -49,9 +40,14 @@ public class GpioPinListenerDigitalMy implements GpioPinListenerDigital {
             thread = new Thread() {
                 public void run() {
                     try {
-                        this.sleep(500);
+                        this.sleep(LightLevels.DELAY);
                         if (!clicked) {
                             light.setLighted(false);
+                            try {
+                                sendPost("http://10.10.1.10:3000","off",light.getId());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
 
                         }
                     } catch (InterruptedException  e) {
