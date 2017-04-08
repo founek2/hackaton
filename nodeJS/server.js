@@ -34,11 +34,28 @@ app.get('/lamp.png', function (req, res) {
 app.get('/kekel.html', function (req, res) {
     res.sendFile(__dirname + '/kekel.html');
 });
+app.get('/err.png', function (req, res) {
+    console.log("sadasd")
+    res.sendFile(__dirname + '/err.png');
+});
 //{on: ?, off: ?}
 app.post('/point', function (req, res) {
     console.log(req.body)
-    array.push(req.body.on);
+
+
     io.sockets.in('room').emit('point', req.body);
+
+    res.send()
+
+
+})
+
+app.post('/break', function (req, res) {
+    console.log(req.body)
+
+
+    io.sockets.in('room').emit('break', req.body);
+
     res.send()
 
 
@@ -48,8 +65,7 @@ app.post('/point', function (req, res) {
 io.on('connection', function (socket) {
     socket.join('room');
 
-    if (array.length  > 0){
-    socket.emit('pointArchive', array);}
+
 
 });
 
