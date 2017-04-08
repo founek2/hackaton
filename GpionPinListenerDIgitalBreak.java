@@ -23,17 +23,17 @@ public class GpionPinListenerDIgitalBreak  implements GpioPinListenerDigital {
         if (event.getState().isHigh()) {
             System.out.println("send true");
             light.setBreak(true);
-            sendPost(LightLevels.URL+"/break","true",light.getId());
+            sendPost(LightLevels.URL+"/break",true,light.getId());
         }else {
             System.out.println("send false");
             light.setBreak(false);
-            sendPost(LightLevels.URL+"/break","false",light.getId());
+            sendPost(LightLevels.URL+"/break",false,light.getId());
         }
     }
 
     private final String USER_AGENT = "Mozilla/5.0";
 
-    private void sendPost(String url, String what, int id) {
+    private void sendPost(String url, boolean what, int id) {
 
         try {
             //String url = "http://192.168.1.158:3001";

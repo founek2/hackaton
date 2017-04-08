@@ -52,21 +52,13 @@ app.post('/point', function (req, res) {
 
 app.post('/break', function (req, res) {
     console.log(req.body)
-
-
     io.sockets.in('room').emit('break', req.body);
-
     res.send()
-
-
 })
 
 
 io.on('connection', function (socket) {
     socket.join('room');
-
-
-
 });
 
 http.listen(3000, function () {

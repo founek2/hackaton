@@ -6,13 +6,14 @@ var makers = [];
 
 var kek = [[49.184471, 16.581806],
     [49.184367, 16.581622],
-    [49.184240, 16.581348],
+    [49.184264, 16.581399],
     [49.184160, 16.581200],
     [49.184052, 16.580891],
     [49.183929, 16.580603],
-    [49.183859, 16.580348],
+    [49.183865, 16.580370],
     [49.183811, 16.580129],
     [49.183752, 16.579752]];
+
 
 for(var i = 0; i < kek.length; i++){
     makers[i] = [null, null]
@@ -50,7 +51,7 @@ if(msg.on != undefined){
 socket.on('break', function(msg){
     console.log(msg)
     if(msg.number != undefined){
-        if (msg.break == false){
+        if (msg.break == "false" && makers[msg.number][1] != false){
                 if(makers[msg.number][1] == true){
                     makers[msg.number][0].setMap(null)
                     makers[msg.number] = [null, null];
@@ -58,7 +59,7 @@ socket.on('break', function(msg){
                 console.log("asdasdasdas")
                 var coords = kek[Number(msg.number)];
                 var latLng = new google.maps.LatLng(coords[0],coords[1]);
-                var image = 'http://127.0.0.1:3000/err.png';
+                var image = 'http://192.168.1.10:3000/err.png';
 
                 var marker = new google.maps.Marker({
                     position: latLng,
@@ -68,7 +69,7 @@ socket.on('break', function(msg){
                 makers[msg.number] = [marker, false];
         }
         console.log(makers[msg.number][1])
-        if (msg.break == true &&  makers[msg.number][1] == false){
+        if (msg.break == "true" &&  makers[msg.number][1] == false){
             console.log("true Break")
                 makers[msg.number][0].setMap(null)
                 makers[msg.number] = [null,null];
@@ -76,3 +77,4 @@ socket.on('break', function(msg){
         }
     }
 });
+
