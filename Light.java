@@ -12,9 +12,12 @@ public class Light {
     private int id;
     private GpioPinDigitalOutput led;
     private GpioPinDigitalInput button;
+    private GpioPinDigitalInput breaker;
     private boolean lighted = false;
+    private Boolean breakB = null;
     private LinkedList<Light[]> sideLights = new LinkedList<Light[]>();
     private Map<Light, Integer> parrentLights = new HashMap<Light, Integer>();//mostFaraway to Least Faraway
+
 
     public Light(int id, Pin led, Pin button) {
         this.id = id;
@@ -22,7 +25,7 @@ public class Light {
         this.button = GpioFactory.getInstance().provisionDigitalInputPin(button, PinPullResistance.PULL_DOWN);
         SoftPwm.softPwmCreate(this.led.getPin().getAddress(), 0, 100);
         SoftPwm.softPwmWrite(this.led.getPin().getAddress(), LightLevels.LIGHT_LEVELS[0]);
-        this.button.addListener(new GpioPinListenerDigitalMy(this));
+        this.button.addListener(new GpioPinListenerDigitalButton(this));
     }
 
     public void addSideLight(Light[] sideLight) {
@@ -37,15 +40,24 @@ public class Light {
     }
 
     public void addSubLevelLight(Light parrent, int level) {
-        parrentLights.put(parrent,level);
+        parrentLights.put(parrent, level);
         SoftPwm.softPwmWrite(led.getPin().getAddress(), maxLight());
     }
 
-    public void removeSubLevelLight(Light parrent){
+    public void removeSubLevelLight(Light parrent) {
         parrentLights.remove(parrent);
         SoftPwm.softPwmWrite(led.getPin().getAddress(), maxLight());
     }
 
+    public void addBreak(Pin breaker) {
+        this.breaker = GpioFactory.getInstance().provisionDigitalInputPin(breaker, PinPullResistance.PULL_UP);
+        this.button.addListener(new GpionPinListenerDIgitalBreak(this));
+        breakB=true;
+    }
+
+    public void setBreak(boolean breaker){
+        breakB=breaker;
+    }
 
     public void setLighted(boolean lighted) {
         this.lighted = lighted;
@@ -53,7 +65,7 @@ public class Light {
             SoftPwm.softPwmWrite(led.getPin().getAddress(), LightLevels.LIGHT_LEVELS[LightLevels.LIGHT_LEVELS.length - 1]);
             for (Light[] lights : sideLights) {
                 for (int i = 0; i < lights.length; i++) {
-                    lights[i].addSubLevelLight(this,LightLevels.LIGHT_LEVELS[i+1]);
+                    lights[i].addSubLevelLight(this, LightLevels.LIGHT_LEVELS[i + 1]);
                 }
             }
         } else {
@@ -67,9 +79,9 @@ public class Light {
     }
 
     public int maxLight() {
-        if(lighted){
-            return LightLevels.LIGHT_LEVELS[LightLevels.LIGHT_LEVELS.length-1];
-        }else {
+        if (lighted) {
+            return LightLevels.LIGHT_LEVELS[LightLevels.LIGHT_LEVELS.length - 1];
+        } else {
             Map.Entry<Light, Integer> maxEntry = null;
             for (Map.Entry<Light, Integer> entry : parrentLights.entrySet()) {
                 if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0) {

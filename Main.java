@@ -56,6 +56,10 @@ public class Main {
 
         lights.get(8).addSideLight(new Light[]{lights.get(7)});
 
+
+        lights.get(7).addBreak(RaspiPin.GPIO_21);
+        lights.get(8).addBreak(RaspiPin.GPIO_22);
+
         while (true) {
             Thread.sleep(500);
         }
