@@ -29,7 +29,7 @@ public class Main {
         lights.put(6,new Light(6,RaspiPin.GPIO_12 , RaspiPin.GPIO_10));
         lights.put(7,new Light(7,RaspiPin.GPIO_13 , RaspiPin.GPIO_11));
         lights.put(8,new Light(8,RaspiPin.GPIO_14 , RaspiPin.GPIO_26));
-        //test
+        //tests
         lights.get(0).addSideLight(new Light[]{lights.get(1)});
 
         lights.get(1).addSideLight(new Light[]{lights.get(0)});
