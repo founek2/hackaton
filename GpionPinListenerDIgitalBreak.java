@@ -19,10 +19,13 @@ public class GpionPinListenerDIgitalBreak  implements GpioPinListenerDigital {
 
     @Override
     public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
+        System.out.println("changed");
         if (event.getState().isHigh()) {
+            System.out.println("send true");
             light.setBreak(true);
             sendPost(LightLevels.URL+"/break","true",light.getId());
         }else {
+            System.out.println("send false");
             light.setBreak(false);
             sendPost(LightLevels.URL+"/break","false",light.getId());
         }

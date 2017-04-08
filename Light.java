@@ -51,7 +51,7 @@ public class Light {
 
     public void addBreak(Pin breaker) {
         this.breaker = GpioFactory.getInstance().provisionDigitalInputPin(breaker, PinPullResistance.PULL_UP);
-        this.button.addListener(new GpionPinListenerDIgitalBreak(this));
+        this.breaker.addListener(new GpionPinListenerDIgitalBreak(this));
         breakB=true;
     }
 

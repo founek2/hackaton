@@ -46,7 +46,6 @@ public class GpioPinListenerDigitalButton implements GpioPinListenerDigital {
             thread.start();
 
         }
-        System.out.println("changed" + light.getId());
     }
 
 
